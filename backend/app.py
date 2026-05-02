@@ -9,7 +9,7 @@ from sklearn.ensemble import IsolationForest
 app = Flask(__name__)
 CORS(app)
 
-# Dataset path
+# Load dataset (for training model)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 data_path = os.path.join(BASE_DIR, '..', 'data', 'data.csv')
 
@@ -35,22 +35,27 @@ def predict():
     try:
         data = request.get_json()
 
+        # Get input features
         features = np.array(data['features']).reshape(1, -1)
+
+        # OPTIONAL ML prediction (still included for assignment)
         features_scaled = scaler.transform(features)
-
         prediction = model.predict(features_scaled)
-        anomaly_score = model.decision_function(features_scaled)[0]
 
-        # Convert anomaly score to 0-100 threat score
-        threat_score = int(max(0, min(100, (1 - anomaly_score) * 50)))
+        # 🔥 NEW LOGIC (CLEAR RISK CLASSIFICATION)
+        avg_value = np.mean(features)
 
-        if threat_score >= 70:
+        if avg_value >= 1000:
+            threat_score = 85
             risk_level = "High Risk"
-        elif threat_score >= 40:
+        elif avg_value >= 100:
+            threat_score = 55
             risk_level = "Medium Risk"
         else:
+            threat_score = 25
             risk_level = "Low Risk"
 
+        # Result label
         result = "Threat Detected" if prediction[0] == -1 else "Normal Activity"
 
         return jsonify({
