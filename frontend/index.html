@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -72,4 +73,80 @@
 
 </body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI Security Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        input {
+            padding: 10px;
+            margin: 5px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🔐 AI Security Dashboard</h1>
+
+    <input id="f1" placeholder="Feature1"><br>
+    <input id="f2" placeholder="Feature2"><br>
+    <input id="f3" placeholder="Feature3"><br>
+    <input id="f4" placeholder="Feature4"><br>
+
+    <button onclick="predict()">Check Threat</button>
+
+    <div id="result"></div>
+
+    <script>
+        function predict() {
+            const data = {
+                Feature1: parseFloat(document.getElementById('f1').value),
+                Feature2: parseFloat(document.getElementById('f2').value),
+                Feature3: parseFloat(document.getElementById('f3').value),
+                Feature4: parseFloat(document.getElementById('f4').value)
+            };
+
+            fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(result => {
+                    document.getElementById('result').innerHTML =
+                        "Prediction: " + result.prediction + "<br>Threat: " + result.threat_level;
+                });
+        }
+    </script>
+
+</body>
+
+>>>>>>> 62378f46b605f4d73ef0fa7d1153e9aff172100e
 </html>
